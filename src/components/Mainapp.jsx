@@ -64,7 +64,6 @@ export const Mainapp = () => {
             console.log(result)
             allCommits(user)
             console.log(api.getCommitActivity("swissspidy", "preferred-languages"))
-            api.getEvents(user).then(console.log)
         })
     }
 
