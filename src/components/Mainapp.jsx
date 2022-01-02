@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import * as api from "../api/Api"
 import { Barchart } from './Barchart';
 import { Radialchart } from './Radialchart';
@@ -10,7 +10,10 @@ import { Profile } from './Profile';
 
 export const Mainapp = () => {
     
-    
+    useEffect(() => {
+        getUser(sessionStorage.getItem("user"))
+    }, [])
+
     const [thisUser, setUser] = useState({});
     const [commits, setCommits] = useState([]);
     const allCommits= (user) => {
@@ -33,8 +36,9 @@ export const Mainapp = () => {
     const allContributors = (user, repo) => {
         api.getContributors(user, repo).then((result)=>{
             let res = []
+            allActivity(user, repo)
             for (const contributor of result) {
-                res.push({name:contributor.login, value:contributor.contributions})
+                res.push({name:contributor.login, commits:contributor.contributions})
             }
             setContributors(res);
             console.log(res)
@@ -46,9 +50,11 @@ export const Mainapp = () => {
     
     const allActivity = (user, repo) => {
         api.getCommitActivity(user, repo).then((result)=>{
+            setActivity([])
             let res = []
+            let count = 1
             for (const activity of result) {
-                res.push({weeks:result, commits:activity.total})
+                res.push({name:"Wk "+ count++ , commits:activity.total})
             }
             setActivity(res);
             console.log(res)
@@ -60,10 +66,12 @@ export const Mainapp = () => {
     const getUser = (user) => {
         api.getUser(user).then(result=>{
             setContributors([])
+            setCommits([])
+            setActivity([])
             setUser(result)
             console.log(result)
             allCommits(user)
-            console.log(api.getCommitActivity("swissspidy", "preferred-languages"))
+          
         })
     }
 
@@ -82,7 +90,7 @@ export const Mainapp = () => {
                             Commits
                         </h2>
                         <Barchart user={thisUser.login} data={commits} dataKey={"value"} onSelect={allContributors}></Barchart>
-                        <Radarchart  data={contributors} dataKey={"value"}></Radarchart>
+                        <Radarchart  data={contributors} dataKey={"commits"}></Radarchart>
 
                     </div>
                 </div>
@@ -97,10 +105,11 @@ export const Mainapp = () => {
                 <div className="flex-column">
                     <div className="flex-item">
                         <h2>
-                            Contributions
+                        Commit Activity in the last year
                         </h2>
 
-                            <Areachart  data={activity} dataKey={"commits"}></Areachart>
+                            <Areachart  data={activity} dataKey={"commits"} ></Areachart>
+                            
                     </div>
                 </div>
             </div>

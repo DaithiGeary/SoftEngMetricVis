@@ -8,7 +8,7 @@ export const Barchart = ({user, data, dataKey, onSelect}) => {
           <BarChart data={data} onClick={e=>onSelect?.(user, e.activeLabel)}>
             <XAxis dataKey={"name"}> </XAxis>
             <YAxis interval={1}></YAxis>
-            <Legend></Legend>
+            {/* <Legend></Legend> */}
             {/* <Cell></Cell> */}
             <CartesianGrid></CartesianGrid>
             <Tooltip></Tooltip>
