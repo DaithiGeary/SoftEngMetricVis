@@ -161,3 +161,20 @@ header > span {
 	border-bottom: 3px dotted #0e1011;
 	font-size: 1.25rem;
 }
+
+.flexwrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.flexwrapper button {
+	font-size: 2.5rem;
+}
+
+.flexwrapper h2 {
+	font-size: 3rem;
+}

@@ -71,7 +71,8 @@ export const Mainapp = () => {
             setUser(result)
             console.log(result)
             allCommits(user)
-          
+            // allActivity(user, api.getRepos(user).then(res=>res[0]))
+            api.getRepos(user).then(repos=>{allActivity(user, repos[0].name)})
         })
     }
 
@@ -89,6 +90,9 @@ export const Mainapp = () => {
                         <h2>
                             Commits
                         </h2>
+                        <p> 
+                            Click on a bar
+                        </p>
                         <Barchart user={thisUser.login} data={commits} dataKey={"value"} onSelect={allContributors}></Barchart>
                         <Radarchart  data={contributors} dataKey={"commits"}></Radarchart>
 
@@ -113,11 +117,8 @@ export const Mainapp = () => {
                     </div>
                 </div>
             </div>
-            {/* <button onClick={()=>allCommits("DominikGuzowski")}>Commits yo</button> */}
-            {/* <Barchart data={commits} dataKey={"value"}></Barchart> */}
-            
           
-           <button onClick={()=>allActivity("swissspidy", "preferred-languages")}>Who be Contributing</button>
+           {/* <button onClick={()=>allActivity("swissspidy", "preferred-languages")}>Who be Contributing</button> */}
             
         </div>
     )
