@@ -58,9 +58,12 @@ export const Mainapp = () => {
             }
             setActivity(res);
             console.log(res)
-        
         })
     }
+
+    const [languages, setLanguages] = useState([]);
+
+    
 
 
     const getUser = (user) => {
@@ -71,7 +74,7 @@ export const Mainapp = () => {
             setUser(result)
             console.log(result)
             allCommits(user)
-            // allActivity(user, api.getRepos(user).then(res=>res[0]))
+            api.getLanguages(user).then(setLanguages).catch(()=>setLanguages([]))
             api.getRepos(user).then(repos=>{allActivity(user, repos[0].name)})
         })
     }
@@ -93,10 +96,18 @@ export const Mainapp = () => {
                         <p> 
                             Click on a bar
                         </p>
-                        <Barchart user={thisUser.login} data={commits} dataKey={"value"} onSelect={allContributors}></Barchart>
+                        {commits.length!==0?
+                        <Barchart user={thisUser.login} data={commits} dataKey={"value"} onSelect={allContributors}></Barchart>:<h3>Getting Data...</h3>
+                        }
+                    </div>
+                    {contributors.length!==0&&
+                    <div className="flex-item">
+                        <h2>
+                            Contributors
+                        </h2>
                         <Radarchart  data={contributors} dataKey={"commits"}></Radarchart>
 
-                    </div>
+                    </div>}
                 </div>
                 <div className="flex-column">
                     <div className="flex-item">
@@ -108,18 +119,24 @@ export const Mainapp = () => {
                 </div>
                 <div className="flex-column">
                     <div className="flex-item">
-                        <h2>
+                        <h2 style={{marginBottom:"3rem"}}>
                         Commit Activity in the last year
                         </h2>
-
-                            <Areachart  data={activity} dataKey={"commits"} ></Areachart>
-                            
+                            {activity.length!==0?
+                            <Areachart  data={activity} dataKey={"commits"} ></Areachart>:<h3>Getting Data...</h3>
+                            }                           
                     </div>
+                    {contributors.length!==0&&
+                        <div className="flex-item"> 
+                            <h2>
+                                User Languages
+                            </h2>
+                            <ol className='language-list'>
+                                {languages.map(x=>{return <li key={x.name}>{x.name}: {x.value} </li>})}
+                            </ol>
+                        </div>}
                 </div>
-            </div>
-          
-           {/* <button onClick={()=>allActivity("swissspidy", "preferred-languages")}>Who be Contributing</button> */}
-            
+            </div>            
         </div>
     )
 

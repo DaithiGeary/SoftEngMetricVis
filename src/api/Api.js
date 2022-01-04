@@ -50,6 +50,20 @@ export const getCommitActivity = async (username, repo) => {
     });
     return data
 } 
+
+export const getLanguages = async (username) => {
+    const data = await getRepos(username)
+    let languages = {}
+    for(const repo of data){
+        const L = await getRepoLanguages(username, repo.name)
+        for(const [key, value] of Object.entries(L)){
+            if(!languages[key])languages[key]=value
+            else languages[key]+=value
+        }
+    }
+    const res = Object.entries(languages).map(([name, value])=>({name, value}))
+    return res
+} 
  
 const headers=()=> {
      return{

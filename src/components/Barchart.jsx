@@ -4,7 +4,7 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 export const Barchart = ({user, data, dataKey, onSelect}) => {
   if(data.length === 0)return null;
     return (
-        <ResponsiveContainer width="95%" aspect={1.5}>
+        <ResponsiveContainer width="95%" aspect={1.75}>
           <BarChart data={data} onClick={e=>onSelect?.(user, e.activeLabel)}>
             <XAxis dataKey={"name"}> </XAxis>
             <YAxis interval={1}></YAxis>
